@@ -35,23 +35,29 @@ def runString(code):
             for i1 in quotes:
                 quote = i1.lower()
                 if quote == "python":
-                    modulesInfo["python"] = {"runLang":"python","runpy":"%quote%"}
+                    modulesInfo["python"] = {"runLang":"pythondebug","runpy":"%quote%"}
                     modules.append("python")
                 else:
                     print("koolCode WARN: custom modules not supported/module not found.")
         else:
             for i1 in modules:
-                print(str(i1))
-                print(modulesInfo["python"])
-                print(modulesInfo[i1])
                 if modulesInfo[i1]["runLang"] == "python":
+                    try:
+                        for i2 in quotes:
+                            quote = i2
+                            code = modulesInfo[str(i1)][keyword].replace("%quote%", quote).replace("%nl%","\n")
+                            eval(code)
+                    except:
+                        print(f"koolCode ERROR: Unknown keyword or module fail. Enable debug in your module settings if you are a module developer.")
+                elif modulesInfo[i1]["runLang"] == "pythondebug":
                     try:
                         for i2 in quotes:
                             quote = i2
                             code = modulesInfo[str(i1)][keyword].replace("%quote%", quote)
                             eval(code)
-                    except:
-                        print(f"koolCode ERROR: Unknown keyword or module fail.")
+                    except BaseException as error:
+                        print(f"koolCode ERROR: Unknown keyword or module fail. Got {error}")
+
 def runFile(dir):
     try:
         file = open(dir)
